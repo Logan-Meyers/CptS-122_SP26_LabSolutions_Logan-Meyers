@@ -1,6 +1,6 @@
 # CptS-122_SP26_LabSolutions_Logan-Meyers
 
-My solutions to the lab tasks, along with possible other things.
+My solutions to the lab tasks, possibly along with other things.
 
 _If you need some inspiration on how to solve a task, here's a decent place to look!_
 
@@ -9,7 +9,7 @@ _If you need some inspiration on how to solve a task, here's a decent place to l
 - [Table of contents](#table-of-contents)
 - [Contributing](#contributing)
 - [Constraints](#constraints)
-- 
+- [Layout & Solutions](#layout--solutions)
 
 ## Contributing
 
