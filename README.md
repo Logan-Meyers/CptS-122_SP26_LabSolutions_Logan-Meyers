@@ -31,7 +31,8 @@ Layout of files and projects, plus a date:
 ```
 CptS-122_SP26_LabSolutions_Logan-Meyers/
  └ LabSolutions     | Each lab as a project in this main solution
-    └ Lab 1         | 01/22/2026: HelloWorld, strcat, reverse string, strtok, and string merges
+    ├ Lab 1         | 01/22/2026: HelloWorld, strcat, reverse string, strtok, and string merges
+    └ Lab 2         | 01/29/2026: Singly Linked List
 ```
 
 <!-- Special characters: └ ├ -->
