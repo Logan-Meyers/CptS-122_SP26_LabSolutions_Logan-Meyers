@@ -13,9 +13,9 @@ _If you need some inspiration on how to solve a task, here's a decent place to l
 
 ## How to Use
 
-Each lab's solution with be available as an individual "Release" for this repo. You may download the .zip solution and view the solutions in Visual Studio 2026.
+Each lab's solution with be available as an individual "Release" for this repo ([here is the releases page](https://github.com/Logan-Meyers/CptS-122_SP26_LabSolutions_Logan-Meyers/releases)). You may download the .zip solution and view the solutions in Visual Studio 2026.
 
-Alternaitvely, you can download the whole repo and get access to all the solutions.
+Alternatively, you can download the whole repo and get access to all the solutions.
 
 ## Constraints
 
@@ -30,5 +30,8 @@ Layout of files and projects, plus a date:
 
 ```
 CptS-122_SP26_LabSolutions_Logan-Meyers/
- └ Lab1             | Lab 1 (01/22/2026)
+ └ LabSolutions     | Each lab as a project in this main solution
+    └ Lab 1         | 01/22/2026: HelloWorld, strcat, reverse string, strtok, and string merges
 ```
+
+<!-- Special characters: └ ├ -->
