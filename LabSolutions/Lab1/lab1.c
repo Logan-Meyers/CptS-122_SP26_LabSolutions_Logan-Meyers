@@ -1,16 +1,93 @@
-/*
-- Programmer: Logan Meyers
-- Class: CptS 122 Lab #11
-- Assignment: Lab 1 Task 2
-- Date: 01/22/2026
+#include "lab1.h"
 
-- File: funcs.c
-- Description: file definitions for all functions declared in funcs.h
-*/
+/* ------------------------------ TASK 1 ------------------------------ */
 
-#include "funcs.h"
+void task1() {
+    printf("Hello world! I'm in CptS 122!!\n");
+}
 
-char *my_strcat(char *destination, const char *source) {
+/* ------------------------------ TASK 2 ------------------------------ */
+
+void task2() {
+    testConcat();
+    testReverse();
+    testStrTok();
+    testMerges();
+}
+
+void testConcat() {
+    char dest[10] = "abc";
+    char* src = "defgh";
+
+    printf("-- TASK 2A (Concatenation) --\n");
+    printf("Dest: %s\nSrc: %s\n", dest, src);
+    my_strcat(dest, src);
+    printf("After: %s\n", dest);
+}
+
+void testReverse() {
+    printf("\n-- TASK 2B (Reversing) --\n");
+    char rev[20] = "Hello World!";
+    printf("Before: %s\n", rev);
+    reverseString(rev, strlen(rev));
+    printf("After: %s\n", rev);
+}
+
+void testStrTok() {
+    char line[50] = "We are in CptS 122-42,53;64,90-32;15";
+
+    printf("\n-- TASK 2C (custom strtok) --\n");
+    printf("Line: %s", line);
+    printf("Calling strtok with delimiters: [space] - , ;\n");
+
+    char* ptr = my_strtok(line, " -,;");
+
+    for (; ptr != NULL; ptr = my_strtok(NULL, " -,;")) {
+        printf("token: %s\n", ptr);
+    }
+}
+
+void testMerges() {
+    const char str1[50] = "Hello, this is my first string! 24563874986";
+    const char str2[50] = "And this is my second! 234672741578";
+    char dest[100];
+
+    mergeFixed(str1, str2, dest, sizeof(dest));
+
+    printf("\n-- TASK 2D - Merge with Fixed Third Array --\n");
+    printf("Str 1: \"%s\"\n", str1);
+    printf("Str 2: \"%s\"\n", str2);
+    printf("Dest: \"%s\"\n", dest);
+
+    /* ----- code for the original dynamic merge ----- */
+    //char *dest2 = NULL;
+    //int dest2size = 0;
+    //mergeDynamic(str1, str2, &dest2, &dest2size);
+
+    //printf("\n-- TASK 2D - Merge with Dynamic Third Array --\n");
+    //printf("Dest: \"%s\"\n", dest2);
+
+    //free(dest2);
+
+    char* dest2 = NULL;
+    int dest2size = 0;
+
+    mergeDynamicBetter(str1, str2, &dest2, &dest2size);
+
+    printf("\n-- TASK 2D - Merge with Dynamic Third Array --\n");
+    printf("Dest: \"%s\"\n", dest2);
+
+    if (dest2) free(dest2);
+
+    char dest3[150];
+    strcpy(dest3, str1);
+    mergeToDest(dest3, str2, sizeof(dest3));
+
+    printf("\n-- TASK 2D - Merge with No Third Array --\n");
+    printf("Dest: \"%s\"", dest3);
+}
+
+char* my_strcat(char* destination, const char* source) {
     // create our working variables
     int dest_len = strlen(destination);  // length of destination
     int src_len = strlen(source);  // length of source
@@ -22,36 +99,36 @@ char *my_strcat(char *destination, const char *source) {
     }
 
     // add final null char to end string
-    destination[dest_len+strlen(source)] = '\0';
+    destination[dest_len + strlen(source)] = '\0';
 
     // return dest. pointer we were given
     return destination;
 }
 
-void reverseString(char *str, int len) {
+void reverseString(char* str, int len) {
     // base case
     if (len <= 1) return;
 
     // swap characters
     char tmp = str[0];
-    str[0] = str[len-1];
-    str[len-1] = tmp;
+    str[0] = str[len - 1];
+    str[len - 1] = tmp;
 
     // recursive call
-    reverseString(str+1, len-2);
+    reverseString(str + 1, len - 2);
 }
 
-int char_in_str(char c, char *str) {
-    for (int i=0; i < strlen(str); i++) {
+int char_in_str(char c, char* str) {
+    for (int i = 0; i < strlen(str); i++) {
         if (c == str[i]) return 1;
     }
     return 0;
 }
 
-char *my_strtok(char *str, const char *delim) {
+char* my_strtok(char* str, const char* delim) {
     static char* pToken;
     char* workingString = NULL;
-    
+
     // string isn't null, set ptoken
     if (str != NULL) {
         pToken = str;
@@ -78,7 +155,7 @@ char *my_strtok(char *str, const char *delim) {
                 break;
             }
         }
-        
+
         // increment along the string
         pToken++;
     }
@@ -87,17 +164,17 @@ char *my_strtok(char *str, const char *delim) {
     return workingString;
 }
 
-void mergeFixed(const char* str1, const char* str2, char* dest, const int dest_size) {
+char* mergeFixed(const char* str1, const char* str2, char* dest, const int dest_size) {
     // base check: have to have at least one string with values
     if (str1 == NULL && str2 == NULL)
-        return;
+        return NULL;
 
     // base check: have to have a destination
     if (dest == NULL)
-        return;
-    
+        return NULL;
+
     // create an array to hold counts of all ascii values found (frequency table)
-    unsigned int counts[256] = {0};
+    unsigned int counts[256] = { 0 };
     // make sure filled with zeros
     for (int i = 0; i < 256; i++) {
         counts[i] = 0;
@@ -117,7 +194,7 @@ void mergeFixed(const char* str1, const char* str2, char* dest, const int dest_s
 
     // fill dest with characters in order
     int destidx = 0;
-    for (int i = 0; i < 256 && destidx < dest_size-1; i++) {
+    for (int i = 0; i < 256 && destidx < dest_size - 1; i++) {
         while (counts[i]) {
             dest[destidx] = (char)i;
             destidx++;
@@ -126,16 +203,18 @@ void mergeFixed(const char* str1, const char* str2, char* dest, const int dest_s
     }
 
     dest[destidx] = '\0';
+
+    return dest;
 }
 
-void mergeDynamic(const char* str1, const char* str2, char** dest, int* dest_size) {
+char* mergeDynamic(const char* str1, const char* str2, char** dest, int* dest_size) {
     // base check: have to have at least one string with values
     if (str1 == NULL && str2 == NULL)
-        return;
+        return NULL;
 
     // base check: have to have a dest_size pointer given
     if (dest_size == NULL)
-        return;
+        return NULL;
 
     // set dest size to a default
     if (*dest_size == 0)
@@ -151,9 +230,9 @@ void mergeDynamic(const char* str1, const char* str2, char** dest, int* dest_siz
         if (*dest_size == 0)
             *dest_size = 16;
 
-        *dest = malloc(*dest_size*sizeof(char));
+        *dest = malloc(*dest_size * sizeof(char));
     }
-    
+
     // create an array to hold counts of all ascii values found (frequency table)
     unsigned int counts[256] = { 0 };
 
@@ -174,7 +253,7 @@ void mergeDynamic(const char* str1, const char* str2, char** dest, int* dest_siz
             counts[(int)str2[i]]++;
         }
     }
-        
+
     // fill dest with characters in order
     int destidx = 0;
     for (int i = 0; i < 256; i++) {
@@ -183,13 +262,13 @@ void mergeDynamic(const char* str1, const char* str2, char** dest, int* dest_siz
             if (ret == NULL) {
                 printf("!! realloc failed\n");
 
-                return;
+                return NULL;
             }
-            *dest = (char *)ret;
+            *dest = (char*)ret;
             (*dest_size)++;
             printf("...Resized to hold %d items\n", *dest_size);
         }
-        
+
         while (counts[i]) {
             (*dest)[destidx] = (char)i;
             destidx++;
@@ -198,24 +277,26 @@ void mergeDynamic(const char* str1, const char* str2, char** dest, int* dest_siz
     }
 
     (*dest)[destidx] = '\0';
+
+    return *dest;
 }
 
-void mergeDynamicBetter(const char* str1, const char* str2, char** dest, int* dest_size) {
+char* mergeDynamicBetter(const char* str1, const char* str2, char** dest, int* dest_size) {
     // base check: have to have at least one string with values
     if (str1 == NULL && str2 == NULL)
-        return;
+        return NULL;
 
     // base check: have to have a dest_size pointer given
     if (dest_size == NULL)
-        return;
+        return NULL;
 
     // get the size we'll need
     size_t size_needed = 1;  // 1 for null char at end
     if (str1) size_needed += strlen(str1);
     if (str2) size_needed += strlen(str2);
-    
+
     // malloc or realloc memory for dest
-    void *ret = NULL;
+    void* ret = NULL;
     if (*dest == NULL)
         ret = malloc((size_t)(size_needed * sizeof(char)));
     else {
@@ -224,10 +305,10 @@ void mergeDynamicBetter(const char* str1, const char* str2, char** dest, int* de
 
     if (ret == NULL) {
         printf("!! realloc/malloc failed");
-        return;
+        return NULL;
     }
-       
-    *dest = (char *)ret;
+
+    *dest = (char*)ret;
     *dest_size = (int)size_needed;
 
     // create an array to hold counts of all ascii values found (frequency table)
@@ -253,7 +334,7 @@ void mergeDynamicBetter(const char* str1, const char* str2, char** dest, int* de
 
     // fill dest with characters in order
     int destidx = 0;
-    for (int i = 0; i < 256 && i < *dest_size-1; i++) {
+    for (int i = 0; i < 256 && destidx < *dest_size - 1; i++) {
         while (counts[i]) {
             (*dest)[destidx] = (char)i;
             destidx++;
@@ -262,4 +343,35 @@ void mergeDynamicBetter(const char* str1, const char* str2, char** dest, int* de
     }
 
     (*dest)[destidx] = '\0';
+
+    return *dest;
+}
+
+int cmp_char(const void* a, const void* b) {
+    unsigned char ca = *(const unsigned char*)a;
+    unsigned char cb = *(const unsigned char*)b;
+    return (ca > cb) - (ca < cb);
+}
+
+char* mergeToDest(char* dest, const char* source, int dest_size) {
+    int dest_len = 0, source_len = 0;
+
+    /* find end of dest, but not beyond dest_size */
+    while (dest_len < dest_size && dest[dest_len]) dest_len++;
+    if (dest_len == dest_size) { /* no NUL found — unsafe state; do nothing */
+        return dest;
+    }
+
+    /* append as much of src as fits (leave room for NUL) */
+    while (dest_len + 1 < dest_size && source[source_len]) {
+        dest[dest_len++] = source[source_len++];
+    }
+    dest[dest_len] = '\0';
+
+    /* sort characters in-place (only the visible part, excluding NUL) */
+    if (dest_len > 1) {
+        qsort(dest, dest_len, sizeof(char), cmp_char);
+    }
+
+    return dest;
 }
