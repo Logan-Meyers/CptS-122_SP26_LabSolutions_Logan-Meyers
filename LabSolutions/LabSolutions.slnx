@@ -5,4 +5,5 @@
   </Configurations>
   <Project Path="Lab1/Lab1.vcxproj" Id="0e90cf7c-3788-4251-8b42-9c3ecc1e2dba" />
   <Project Path="Lab2/Lab2.vcxproj" Id="75605b91-4a0d-43ba-9fb4-0a3ad5ac5bcd" />
+  <Project Path="Lab3/Lab3.vcxproj" Id="f20bb3a3-55ef-4ac2-ba31-37a564951aa3" />
 </Solution>
